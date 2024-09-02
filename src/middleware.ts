@@ -1,32 +1,35 @@
-// src/middleware.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
+import authConfig from "@/auth.config";
+import NextAuth from "next-auth";
+import { DEFAULT_LOGIN_REDIRECT, apiAuthPrefix, authRoutes, publicRoutes } from "@/routes";
 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({ req });
-  const { pathname } = req.nextUrl;
+const { auth } = NextAuth(authConfig);
 
-  // Allow if the user is accessing the login or sign-up pages
-  if (pathname.startsWith('/auth') || pathname.startsWith('/api')) {
-    return NextResponse.next();
-  }
+export default auth((req) => {
+    const {nextUrl} = req;
 
-  // Redirect unauthenticated users to the login page
-  if (!token) {
-    return NextResponse.redirect(new URL('/auth/signin', req.url));
-  }
+    const isLoggedIn = !!req.auth;
+    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+    const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  // Protect admin routes
-  if (pathname.startsWith('/admin')) {
-    if (token.role !== 'admin') {
-      return NextResponse.redirect(new URL('/', req.url)); // Redirect to home if not admin
+    if (isApiAuthRoute) {
+        return;
     }
-  }
+    
+    if (isAuthRoute) {
+        if (isLoggedIn) {
+            return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+        }
+        return;
+    }
 
-  // Allow access for authenticated users
-  return NextResponse.next();
-}
+    if (!isLoggedIn && !isPublicRoute && nextUrl.pathname !== '/auth/login') {
+        return Response.redirect(new URL("/auth/login", nextUrl));
+    }
+
+    return;
+});
 
 export const config = {
-  matcher: ['/admin/:path*', '/protected/:path*'], // Define routes where middleware should be applied
+    matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
 };
