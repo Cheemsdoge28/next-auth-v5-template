@@ -8,7 +8,7 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 import { useSearchParams } from "next/navigation";
 
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -57,12 +57,10 @@ export const NewPasswordForm = () => {
                     (<FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                            <Input
+                        <PasswordInput
                             {...field}
                             disabled={isPending}
-                            placeholder="********"
-                            type="password"
-                            />
+                            placeholder="********"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>)}/>
@@ -70,12 +68,10 @@ export const NewPasswordForm = () => {
                     (<FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                            <Input
+                        <PasswordInput
                             {...field}
                             disabled={isPending}
-                            placeholder="********"
-                            type="password"
-                            />
+                            placeholder="********"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>)}/>

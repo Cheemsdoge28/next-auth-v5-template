@@ -13,6 +13,8 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 
 import { register } from "@/actions/register";
+import { EnvelopeClosedIcon, PersonIcon } from "@radix-ui/react-icons";
+import { PasswordInput } from "../ui/password-input";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -60,6 +62,7 @@ export const RegisterForm = () => {
                             disabled={isPending}
                             placeholder="Et Cetera"
                             type="name"
+                            suffix={<PersonIcon/>}
                             />
                         </FormControl>
                         <FormMessage />
@@ -73,6 +76,7 @@ export const RegisterForm = () => {
                             disabled={isPending}
                             placeholder="hello@example.com"
                             type="email"
+                            suffix={<EnvelopeClosedIcon/>}
                             />
                         </FormControl>
                         <FormMessage />
@@ -81,12 +85,10 @@ export const RegisterForm = () => {
                     (<FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                            <Input
+                            <PasswordInput
                             {...field}
                             disabled={isPending}
-                            placeholder="********"
-                            type="password"
-                            />
+                            placeholder="********"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>)}/>
@@ -94,12 +96,10 @@ export const RegisterForm = () => {
                     (<FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                            <Input
+                        <PasswordInput
                             {...field}
                             disabled={isPending}
-                            placeholder="********"
-                            type="password"
-                            />
+                            placeholder="********"/>
                         </FormControl>
                         <FormMessage />
                     </FormItem>)}/>

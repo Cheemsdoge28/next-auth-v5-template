@@ -14,6 +14,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 
 import { reset } from "@/actions/reset";
+import { EnvelopeClosedIcon } from "@radix-ui/react-icons";
 
 export const ResetForm = () => {
     const SearchParams = useSearchParams();
@@ -60,6 +61,7 @@ export const ResetForm = () => {
                             disabled={isPending}
                             placeholder="hello@example.com"
                             type="email"
+                            suffix={<EnvelopeClosedIcon/>}
                             />
                         </FormControl>
                         <FormMessage />
